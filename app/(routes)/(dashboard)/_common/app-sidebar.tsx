@@ -9,12 +9,13 @@ import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getChannelIcon } from '@/constants/channels';
+import { getChannelIcon, getChannelUrl } from '@/constants/channels';
 import { Channel } from 'diagnostics_channel';
 import { ChannelType } from '@/types/channel.type';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { PlusSignIcon } from '@hugeicons/core-free-icons';
 import { UserButton } from '@clerk/nextjs';
+import ChannelAvatar from '@/components/channel-avatar';
 
 const mainNav = [
     { name: "Ideas", href: "/ideas", icon: Lightbulb },
@@ -38,7 +39,8 @@ const AppSidebar = () => {
     })
 
     const channels = (channelsData?.channels || []) as ChannelType[];
-    const unconnectedChannels = channels.filter((channel: any) => !channel.connected);
+    const unconnectedChannels = channels.filter((channel: ChannelType) => !channel.connected);
+    const connectedChannels = channels.filter((channel: ChannelType) => channel.connected);
 
     const connectedCount = channelsData?.connectedCount || 0;
     const totalChannels = channelsData?.totalChannels || 0;
@@ -82,6 +84,44 @@ const AppSidebar = () => {
                     </SidebarGroup>
 
                     {/* {connected Channels} */}
+
+                    {connectedChannels.length > 0 && (
+                        <SidebarGroup className={cn(isCollapsed && "px-1")}>
+                            <SidebarGroupLabel className='text-sm'>Channels</SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {connectedChannels?.map((channel: ChannelType) => {
+                                        const url = getChannelUrl(channel.type)
+
+
+                                        return (
+
+                                            <SidebarMenuItem key={channel.id}>
+                                                <SidebarMenuButton asChild>
+                                                    <a
+                                                        href={`${url}/${channel.handle}`}
+                                                        target='_blank' rel="noreferrer"
+                                                        className='w-full relative block items-center gap-2'
+                                                    >
+                                                        <ChannelAvatar
+                                                            size="sm"
+                                                            className=""
+                                                            type={channel.type}
+                                                            color={channel.color}
+                                                            profileImage={channel.profile_image}
+                                                            name={!isCollapsed ? (channel.name || channel.handle) : ""}
+                                                        />
+                                                    </a>
+                                                </SidebarMenuButton>
+                                            </SidebarMenuItem>
+                                        )
+
+                                    })}
+                                    ں
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+                    )}
 
                     {/* {unconnected Channels} */}
                     <SidebarGroup className={cn(isCollapsed && "px-1")}>
