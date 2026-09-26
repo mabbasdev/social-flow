@@ -1,18 +1,17 @@
 "use client"
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { HugeiconsIcon } from '@hugeicons/react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { Calendar, CreditCard, Lightbulb, Plus, PlusCircleIcon, PlusIcon, Settings } from 'lucide-react';
+import { Calendar, CreditCard, Lightbulb, Plus, PlusCircleIcon, Settings } from 'lucide-react';
 import { useSidebar } from '@/components/ui/sidebar';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getChannelIcon, getChannelUrl } from '@/constants/channels';
-import { Channel } from 'diagnostics_channel';
 import { ChannelType } from '@/types/channel.type';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { PlusSignIcon } from '@hugeicons/core-free-icons';
 import { UserButton } from '@clerk/nextjs';
 import ChannelAvatar from '@/components/channel-avatar';
@@ -83,8 +82,7 @@ const AppSidebar = () => {
                         </SidebarGroupContent>
                     </SidebarGroup>
 
-                    {/* {connected Channels} */}
-
+                    {/* Connected Channels */}
                     {connectedChannels.length > 0 && (
                         <SidebarGroup className={cn(isCollapsed && "px-1")}>
                             <SidebarGroupLabel className='text-sm'>Channels</SidebarGroupLabel>
@@ -93,19 +91,16 @@ const AppSidebar = () => {
                                     {connectedChannels?.map((channel: ChannelType) => {
                                         const url = getChannelUrl(channel.type)
 
-
                                         return (
-
                                             <SidebarMenuItem key={channel.id}>
                                                 <SidebarMenuButton asChild>
                                                     <a
                                                         href={`${url}/${channel.handle}`}
                                                         target='_blank' rel="noreferrer"
-                                                        className='w-full relative block items-center gap-2'
+                                                        className='w-full relative flex items-center gap-2'
                                                     >
                                                         <ChannelAvatar
                                                             size="sm"
-                                                            className=""
                                                             type={channel.type}
                                                             color={channel.color}
                                                             profileImage={channel.profile_image}
@@ -115,15 +110,13 @@ const AppSidebar = () => {
                                                 </SidebarMenuButton>
                                             </SidebarMenuItem>
                                         )
-
                                     })}
-                                    ں
                                 </SidebarMenu>
                             </SidebarGroupContent>
                         </SidebarGroup>
                     )}
 
-                    {/* {unconnected Channels} */}
+                    {/* Unconnected Channels */}
                     <SidebarGroup className={cn(isCollapsed && "px-1")}>
                         <SidebarGroupLabel className='text-sm'>Connect Channels</SidebarGroupLabel>
                         <SidebarGroupContent>
@@ -138,49 +131,51 @@ const AppSidebar = () => {
                                 ) : (
                                     <>
                                         {limitedChannels.map((channel: ChannelType) => {
-
-                                            const icon = getChannelIcon(channel.type)
+                                            const icon = getChannelIcon(channel.type);
 
                                             return (
-
                                                 <SidebarMenuItem key={channel.id}>
-                                                    <SidebarMenuButton asChild
+                                                    <SidebarMenuButton
+                                                        asChild
                                                         tooltip={`Connect ${channel.name}`}
                                                     >
-                                                        <button className='w-full flex items-center gap-2'>
+                                                        <button
+                                                            className='w-full flex items-center gap-2'
+                                                        >
                                                             <span>
-                                                                <div className="relative">
+                                                                <div className='relative'>
                                                                     {icon ? (
                                                                         <HugeiconsIcon icon={icon} color='currentColor'
+                                                                            className=" text-white! size-6! p-1 rounded-sm"
                                                                             style={{ background: channel.color }}
                                                                         />
                                                                     ) : null}
 
-                                                                    <div className={`absolute -right-1 bottom-0 p-0.5 bg-white dark:bg-background rounded-xs`}>
-                                                                        <HugeiconsIcon icon={PlusSignIcon} className='size-2' />
+                                                                    <div className={`absolute -right-1 bottom-0 p-0.5
+                                 bg-white dark:bg-background rounded-xs
+                                `}>
+                                                                        <HugeiconsIcon icon={PlusSignIcon} className="size-2!" />
                                                                     </div>
                                                                 </div>
-
                                                             </span>
                                                             <span className='truncate'>{channel.name}</span>
                                                         </button>
                                                     </SidebarMenuButton>
                                                 </SidebarMenuItem>
                                             )
-
                                         })}
+
+                                        {/* FIXED: Removed double asChild/Button wrapper and correctly wrapped children in Link */}
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
-                                                <Button asChild variant='ghost' className='w-full justify-start mt-1'>
-                                                    <Link href="/settings" className='w-full flex items-center gap-2' />
+                                            <SidebarMenuButton asChild tooltip="More Channels">
+                                                <Link href="/settings" className='w-full flex items-center gap-2 mt-1'>
                                                     <PlusCircleIcon className='size-4' />
                                                     <span className='truncate'>More Channels</span>
-                                                </Button>
+                                                </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                     </>
                                 )}
-
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
@@ -203,7 +198,7 @@ const AppSidebar = () => {
                         />
                     </div>
                 </SidebarFooter>
-            </Sidebar >
+            </Sidebar>
         </>
     )
 }
