@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins:[
+    "mauve-nugget-flock.ngrok-free.dev"
+  ]
 };
 
 export default nextConfig;

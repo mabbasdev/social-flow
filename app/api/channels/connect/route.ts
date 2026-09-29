@@ -5,11 +5,10 @@ import { createPkcePair, getPkceCookieName } from "@/lib/social-oauth/pkce";
 import { createOAuthState } from "@/lib/social-oauth/state";
 import { NextRequest, NextResponse } from "next/server";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
 
 export async function POST(request: NextRequest) {
     try {
-
         const { insforge, userId } = await getInsforgeServerClient();
         if (!userId) return NextResponse.json({ error: 'User not found' }, { status: 401 });
 
@@ -34,31 +33,32 @@ export async function POST(request: NextRequest) {
             channelTypeId: channelType.id,
             channelType: channelType.type,
             redirectTo,
-        })
+        });
 
-        const callbackUrl = `${APP_URL}/api/channel/callback`
+        // FIX 1: Match the exact folder path `/api/channels/callback`
+        const callbackUrl = `${APP_URL}/api/channels/callback`;
 
-        const pkce = channelType.type === ChannelTypeEnum.TWITTER ?
-            createPkcePair()
-            : null
+        const isTwitter = channelType.type.toLowerCase() === ChannelTypeEnum.TWITTER.toLowerCase();
+        const pkce = isTwitter ? createPkcePair() : null;
 
         const url = provider.getAuthorizationUrl({
             state,
             redirectUri: callbackUrl,
             codeChallenge: pkce?.codeChallenge,
-            codeChallengeMethod: pkce?.codeChallengeMethod,
-        })
+            // FIX 2: Ensure Twitter PKCE receives lowercase 's256'
+            codeChallengeMethod: pkce?.codeChallengeMethod?.toLowerCase() || 's256',
+        });
 
-        const response = NextResponse.json({ url })
+        const response = NextResponse.json({ url });
 
         if (pkce) {
             response.cookies.set(getPkceCookieName(state), pkce.codeVerifier, {
                 httpOnly: true,
-                secure: true,
+                secure: process.env.NODE_ENV === "production" || APP_URL?.startsWith("https"),
                 sameSite: 'lax',
                 path: '/',
                 maxAge: 60 * 10, // 10 minutes
-            })
+            });
         }
 
         return response;

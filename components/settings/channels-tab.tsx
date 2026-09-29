@@ -1,4 +1,3 @@
-
 "use client"
 import { Suspense, useState, useEffect } from 'react'
 import { toast } from 'sonner';
@@ -20,19 +19,85 @@ function ChannelTabContent() {
     const { data: channelsData, isPending } = useQuery({
         queryKey: ["channels"],
         queryFn: async () => {
-            const res = await fetch("/api/channel");
+            const res = await fetch("/api/channels");
             const data = await res.json();
             return data
         }
     })
     const channels = (channelsData?.channels || []) as ChannelType[]
 
+    useEffect(() => {
+        const connected = searchParams.get("connected")
+        const error = searchParams.get("error")
+        const channelType = searchParams.get("channelType")
+
+        if (!connected && !error) return
+        queryClient.invalidateQueries({ queryKey: ["channels"] })
+        if (connected) {
+            toast.success(`Successfully connected to ${channelType}`)
+        }
+        if (error) {
+            toast.error(`Failed to connect to ${channelType}`)
+        }
+    }, [queryClient, searchParams])
+
+
+    const connectMutation = useMutation({
+        mutationFn: async (channelTypeId: string) => {
+            const res = await fetch("/api/channels/connect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    channelTypeId,
+                }),
+            })
+            const data = await res.json()
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to connect channel")
+            }
+            return data
+        },
+        onSuccess: ({ url }) => {
+            window.location.href = url
+        },
+        onError: () => {
+            toast.error("Failed to connect channel")
+        }
+    })
+
+    const disConnectMutation = useMutation({
+        mutationFn: async (userChannelId: string) => {
+            const res = await fetch("/api/channels/disconnect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userChannelId,
+                }),
+            })
+            const data = await res.json()
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to connect channel")
+            }
+            return data
+        },
+        onSuccess: ({ url }) => {
+            toast.success("Channel Disconnected")
+            queryClient.invalidateQueries({ queryKey: ["channels"] })
+        },
+        onError: () => {
+            toast.error("Failed to connect channel")
+        }
+    })
 
     const handleConnect = (channelTypeId: string) => {
         if (!channelTypeId) return
+        if (connectMutation.isPending) return
+        connectMutation.mutate(channelTypeId)
     }
     const handleDisconnect = (userChannelId: string) => {
         if (!userChannelId) return
+        if (disConnectMutation.isPending) return
+        disConnectMutation.mutate(userChannelId)
     }
     return (
         <Card>
@@ -90,6 +155,7 @@ function ChannelTabContent() {
                                     </div>
 
                                     <Button variant={channel.connected ? "destructive" : "default"} size="sm"
+                                        disabled={connectMutation.isPending || disConnectMutation.isPending}
                                         onClick={() => channel.connected ? handleDisconnect(channel.user_channel_id!) : handleConnect(channel.id!)}
                                     >
                                         {channel.connected ? "Disconnect" : "Connect"}

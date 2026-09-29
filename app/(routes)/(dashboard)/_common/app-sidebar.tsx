@@ -8,13 +8,16 @@ import { Calendar, CreditCard, Lightbulb, Plus, PlusCircleIcon, Settings } from 
 import { useSidebar } from '@/components/ui/sidebar';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getChannelIcon, getChannelUrl } from '@/constants/channels';
 import { ChannelType } from '@/types/channel.type';
 import { PlusSignIcon } from '@hugeicons/core-free-icons';
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, useUser } from '@clerk/nextjs';
 import ChannelAvatar from '@/components/channel-avatar';
+import { toast } from 'sonner';
+import { useState } from 'react';
+
 
 const mainNav = [
     { name: "Ideas", href: "/ideas", icon: Lightbulb },
@@ -27,23 +30,54 @@ const AppSidebar = () => {
     const pathname = usePathname();
     const { state } = useSidebar()
     const isCollapsed = state === "collapsed"
+    const { user } = useUser()
+    const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false)
+
+    const connectMutation = useMutation({
+        mutationFn: async (channelTypeId: string) => {
+            const res = await fetch("/api/channels/connect", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    channelTypeId,
+                }),
+            })
+            const data = await res.json()
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to connect channel")
+            }
+            return data
+        },
+        onSuccess: ({ url }) => {
+            window.location.href = url
+        },
+        onError: () => {
+            toast.error("Failed to connect channel")
+        }
+    })
 
     const { data: channelsData, isPending } = useQuery({
-        queryKey: ['channels'],
+        queryKey: ["channels"],
         queryFn: async () => {
-            const res = await fetch('/api/channels');
+            const res = await fetch("/api/channels");
             const data = await res.json();
             return data
         }
     })
 
-    const channels = (channelsData?.channels || []) as ChannelType[];
+    const channels = (channelsData?.channels || []) as ChannelType[]
     const unconnectedChannels = channels.filter((channel: ChannelType) => !channel.connected);
     const connectedChannels = channels.filter((channel: ChannelType) => channel.connected);
 
     const connectedCount = channelsData?.connectedCount || 0;
     const totalChannels = channelsData?.totalChannels || 0;
-    const limitedChannels = unconnectedChannels.slice(0, 4)
+    const limitedChannels = unconnectedChannels.slice(0, 4);
+
+
+    const handleConnect = (channelTypeId: string) => {
+        if (connectMutation.isPending) return;
+        connectMutation.mutate(channelTypeId);
+    }
 
     return (
         <>
@@ -140,6 +174,7 @@ const AppSidebar = () => {
                                                         tooltip={`Connect ${channel.name}`}
                                                     >
                                                         <button
+                                                        disabled={connectMutation.isPending}
                                                             className='w-full flex items-center gap-2'
                                                         >
                                                             <span>
