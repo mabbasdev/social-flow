@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
         const state = verifyOAuthState(stateParams);
         const redirectTo = state?.redirectTo || `${APP_URL}/settings`;
         const pkceCookieName = getPkceCookieName(stateParams);
-        
+
         // Extract channel type safely
         const channelTypeStr = (state?.channelType || "TWITTER").toString();
         fallbackChannelType = channelTypeStr;
@@ -116,6 +116,7 @@ export async function GET(request: NextRequest) {
             provider_account_id: profile.providerAccountId ?? null,
             handle: profile.handle ?? null,
             profile_image: profile.profileImage ?? null,
+            profile_url: profile.profileUrl ?? (profile.handle ? `https://x.com/${profile.handle}` : null), // Add this line
             access_token: encrypt(token.accessToken),
             refresh_token: encrypt(token.refreshToken ?? null),
             token_expires_at: token.expiresAt ?? null,

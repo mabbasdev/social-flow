@@ -184,6 +184,7 @@ function createProvider(
             }
 
             const data = await response.json();
+
             const profileData = data?.data ?? data?.user ?? data?.items?.[0] ?? data;
 
             const providerAccountId =
@@ -208,10 +209,15 @@ function createProvider(
                 profileData?.snippet?.thumbnails?.default?.url ??
                 null;
 
+            const profileUrl =
+                profileData?.profile_url ??
+                (isTwitter && handle ? `https://x.com/${handle}` : null);
+
             return {
                 providerAccountId,
                 handle,
                 profileImage,
+                profileUrl
             };
         },
     };

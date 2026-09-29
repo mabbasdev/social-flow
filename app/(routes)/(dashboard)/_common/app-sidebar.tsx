@@ -135,10 +135,11 @@ const AppSidebar = () => {
                                                     >
                                                         <ChannelAvatar
                                                             size="sm"
+                                                            className='w-full flex items-center gap-2'
                                                             type={channel.type}
                                                             color={channel.color}
                                                             profileImage={channel.profile_image}
-                                                            name={!isCollapsed ? (channel.name || channel.handle) : ""}
+                                                            name={!isCollapsed ? (channel.handle || channel.name) : ""}
                                                         />
                                                     </a>
                                                 </SidebarMenuButton>

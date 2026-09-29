@@ -4,6 +4,7 @@ export type OAuthConnectionProfile = {
     providerAccountId?: string | null
     handle?: string;
     profileImage?: string | null
+    profileUrl?: string | null
 }
 
 export type OAuthTokenResponse = {
