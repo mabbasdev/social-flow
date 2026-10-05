@@ -43,7 +43,7 @@ export function LinkedinPreview({ text, images, profileImage, handle }: Linkedin
                     <MoreHorizontal className="size-5 text-muted-foreground" />
                 </div>
 
-                <div className="text-sm leading-normal whitespace-pre-wrap break-words px-3 mb-3">
+                <div className="text-sm leading-normal whitespace-pre-wrap wrap-break-word px-3 mb-3">
                     {!text ? (
                         <span className="text-muted-foreground italic">Nothing yet…</span>
                     ) : text.length > CHAR_LIMIT && !isExpanded ? (

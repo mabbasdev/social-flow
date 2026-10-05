@@ -22,7 +22,7 @@ import { POST_STATUS, PostStatus } from "@/constants/post";
 import { ScheduleDatePicker } from "@/components/schedule/schedule-date-picker";
 import Link from "next/link";
 import { Spinner } from "../ui/spinner";
-// import { AIAssistant } from "./ai-assitant";
+// import { AIAssistant } from "./ai-assistant";
 import IdeasList from "./ideas-list";
 import PreviewPanel from "@/components/schedule/preview";
 
@@ -310,8 +310,8 @@ const CreatePostDialog = ({ open, onOpenChange, selectedDate }: PropsType) => {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className={cn(
-        "sm:w-full sm:min-w-[700px] gap-0 px-0 pt-0 pb-0",
-        selectedRightTab && "sm:max-w-[950px]"
+        "sm:w-full sm:min-w-175 gap-0 px-0 pt-0 pb-0",
+        selectedRightTab && "sm:max-w-237.5"
       )}>
         <div>
           <DialogHeader className="px-8 py-3 border-b">
@@ -334,10 +334,10 @@ const CreatePostDialog = ({ open, onOpenChange, selectedDate }: PropsType) => {
           </DialogHeader>
 
 
-          <div className="w-full flex flex-1 min-w-0 overflow-hidden h-[580px]">
+          <div className="w-full flex flex-1 min-w-0 overflow-hidden h-145">
 
             {/* Left — channel list */}
-            <div className="flex flex-1 flex-col min-w-0 w-[300px] pb-5">
+            <div className="flex flex-1 flex-col min-w-0 w-75 pb-5">
               <div className="channel--selector py-5  px-8">
                 {channels?.length > 0 && !isPending && (
                   <button
@@ -350,7 +350,7 @@ const CreatePostDialog = ({ open, onOpenChange, selectedDate }: PropsType) => {
                 <div className="flex flex-wrap gap-4">
                   {isPending ? (
                     Array.from({ length: 6 }).map((_, index) => (
-                      <Skeleton key={index} className="size-[50px] rounded-xl" />
+                      <Skeleton key={index} className="size-12.5 rounded-xl" />
                     ))
                   ) : (
                     channels?.map((channel) => {
@@ -396,7 +396,7 @@ const CreatePostDialog = ({ open, onOpenChange, selectedDate }: PropsType) => {
               </div>
 
               <div className="channel--content relative 
-                                        flex flex-col px-8 min-h-[300px] 
+                                        flex flex-col px-8 min-h-75 
                                         h-full overflow-y-auto">
                 {selectedChannels.length === 0 ? (
                   <div className="border rounded-xl p-4">
@@ -445,14 +445,14 @@ hover:no-underline! justify-start gap-3
                                 <HugeiconsIcon
                                   icon={icon}
                                   className={cn(
-                                    "shrink-0 text-white! size-5! p-[3px] rounded-sm",
+                                    "shrink-0 text-white! size-5! p-0.75 rounded-sm",
                                   )}
                                   style={{ background: channel.color }}
                                 />
                               </span>
                               {content.text ? (
                                 <p className="text-sm text-muted-foreground/80 
-truncate flex-1 text-left max-w-[400px]">
+truncate flex-1 text-left max-w-100">
                                   {content.text}
                                 </p>
                               ) : (
@@ -468,7 +468,7 @@ truncate flex-1 text-left max-w-[400px]">
                                   <HugeiconsIcon
                                     icon={icon}
                                     className={cn(
-                                      "shrink-0 text-white! size-5! p-[3px] rounded-sm",
+                                      "shrink-0 text-white! size-5! p-0.75 rounded-sm",
                                     )}
                                     style={{ background: channel.color }}
                                   />
@@ -541,7 +541,7 @@ dark:text-amber-400">
 
             {/* Right — channel preview */}
             {selectedRightTab && (
-              <div className="w-[350px] flex flex-col shrink-0 border-l border-border
+              <div className="w-87.5 flex flex-col shrink-0 border-l border-border
             bg-muted/30 h-full
             ">
                 <div className="py-4 flex-1 flex flex-col h-full">
