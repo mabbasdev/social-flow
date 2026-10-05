@@ -267,7 +267,7 @@ const IdeaKanban = () => {
                         {isPending ? (
                             <div className="flex gap-4 w-full h-full items-start">
                                 {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="shrink-0 w-[280px] flex flex-col h-full min-h-0 
+                                    <div key={i} className="shrink-0 w-70 flex flex-col h-full min-h-0 
                 rounded-lg bg-[#f7f6f3] dark:bg-neutral-800/40 border p-3">
                                         <div className="flex items-center justify-between pb-3">
                                             <Skeleton className="h-5 w-24" />
@@ -275,8 +275,8 @@ const IdeaKanban = () => {
                                         </div>
                                         <div className="flex-1 space-y-3">
                                             <Skeleton className="h-25 w-full rounded-sm" />
-                                            <Skeleton className="h-[120px] w-full rounded-sm" />
-                                            <Skeleton className="h-[80px] w-full rounded-sm" />
+                                            <Skeleton className="h-30 w-full rounded-sm" />
+                                            <Skeleton className="h-20 w-full rounded-sm" />
                                         </div>
                                     </div>
                                 ))}
@@ -291,7 +291,7 @@ const IdeaKanban = () => {
                                         {columns?.map((column) => (
                                             <div
                                                 key={column.id}
-                                                className="shrink-0 w-[280px] flex flex-col h-full min-h-0 
+                                                className="shrink-0 w-70 flex flex-col h-full min-h-0 
 rounded-lg bg-[#f7f6f3] dark:bg-neutral-800/40 border p-3"
                                             >
                                                 <div className="flex items-center justify-between px-3 pt-3 pb-2">
@@ -368,7 +368,7 @@ p-2 px-3 transition-colors min-h-0`,
                                                                                                 <h4 className="font-semibold text-sm">{idea.title}</h4>
                                                                                             </div>
                                                                                             <DropdownMenu>
-                                                                                                <DropdownMenuTrigger>
+                                                                                                <DropdownMenuTrigger asChild>
                                                                                                     <Button
                                                                                                         size="icon"
                                                                                                         variant="ghost"

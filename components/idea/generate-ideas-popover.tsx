@@ -97,7 +97,7 @@ export function GenerateIdeasPopover({ onGenerated }: GenerateIdeasPopoverProps)
                     Generate Ideas
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[400px] p-4 shadow-lg" align="end">
+            <PopoverContent className="w-100 p-4 shadow-lg" align="end">
                 {!canUseAI && !isLoading && (
                     <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3
            text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200">
