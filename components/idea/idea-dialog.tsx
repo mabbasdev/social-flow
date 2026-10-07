@@ -10,6 +10,7 @@ import { Button } from "../ui/button"
 import { Spinner } from "../ui/spinner"
 import { Textarea } from "../ui/textarea"
 import ContentTextarea from "../content-textarea"
+import { AIAssistant } from "../schedule/ai-assitant"
 // import { AIAssistant } from "../schedule/ai-assitant"
 
 type IdeaDialogProps = {
@@ -132,7 +133,7 @@ const IdeaDialog = ({
                     </div>
 
 
-                    {/* {showAI && (
+                    {showAI && (
                         <div className="w-[340px] shrink-0 border-l border-border
                         bg-muted/30
                         ">
@@ -145,7 +146,7 @@ const IdeaDialog = ({
                                 />
                             </div>
                         </div>
-                    )} */}
+                    )}
                 </div>
             </DialogContent>
         </Dialog>

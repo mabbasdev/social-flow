@@ -109,7 +109,7 @@ export function PostCalendar({
     }
 
     return (
-        <div className={cn("h-full relative flex flex-col min-h-[600px] bg-background")}>
+        <div className={cn("h-full relative flex flex-col min-h-150 bg-background")}>
             <Calendar
                 localizer={localizer}
                 events={events}
@@ -167,7 +167,7 @@ export function PostCalendar({
                                         style={{
                                             background: color
                                         }} />}
-                                    <span className="text-xs truncate max-w-[100px]">{event?.title}</span>
+                                    <span className="text-xs truncate max-w-25">{event?.title}</span>
                                     <span className="font-semibold">{format(event.scheduled_at, "h:mm a")}</span>
                                 </div>
                             </>
