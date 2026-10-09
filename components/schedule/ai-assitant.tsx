@@ -29,10 +29,10 @@ export function AIAssistant({ className, content, channelId, onGenerate }: AIAss
     const { data: subscription, isLoading } = useSubscription()
     // const canUseAI = "premium"
 
-    const isDev = process.env.NODE_ENV === "development"
+    // const isDev = process.env.NODE_ENV === "development"
 
     const canUseAI =
-        isDev ||
+        // isDev ||
         !!subscription?.subscriptionItems?.some((item) => {
             const planSlug = item.plan.slug
             return planSlug === "pro" || planSlug === "premium"

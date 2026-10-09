@@ -10,9 +10,14 @@ type ActionType = (typeof ACTIONS)[number];
 
 export async function POST(request: NextRequest) {
     try {
-        const { userId } = await auth();
+        const { has, userId } = await auth();
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const canUseAI = has({ plan: "pro" }) || has({ plan: "premium" });
+        if (!canUseAI) {
+            return NextResponse.json({ error: "Upgrade to Pro or Team plan to use AI features" }, { status: 403 });
         }
 
         const {
