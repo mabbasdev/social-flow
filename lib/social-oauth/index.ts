@@ -121,18 +121,20 @@ function createProvider(
             }
 
             const data = await requestToken(type, params);
-            const seconds = Number(data.expires_in);
-            const expiresAt =
-                seconds > 0 ? new Date(Date.now() + seconds * 1000).toISOString() : null;
+            const expiresAt = data.expires_in
+                ? Date.now() + Number(data.expires_in) * 1000
+                : data.expires_at
+                    ? new Date(data.expires_at).getTime()
+                    : undefined;
 
             return {
                 accessToken: data.access_token,
-                refreshToken: data.refresh_token ?? null,
+                refreshToken: data.refresh_token ?? undefined,
                 expiresAt,
             };
         },
 
-        refreshToken: async ({ refreshToken, redirectUri }) => {
+        refreshToken: async ({ refreshToken, redirectUri }): Promise<OAuthTokenResponse> => {
             const config = getConfig(type);
             const params = new URLSearchParams({
                 grant_type: "refresh_token",
@@ -149,12 +151,17 @@ function createProvider(
 
             const data = await requestToken(type, params);
             const seconds = Number(data.expires_in);
-            const expiresAt =
-                seconds > 0 ? new Date(Date.now() + seconds * 1000).toISOString() : null;
+            
+            // Return number | undefined timestamp to match OAuthTokenResponse type
+            const expiresAt = seconds > 0
+                ? Date.now() + seconds * 1000
+                : data.expires_at
+                    ? new Date(data.expires_at).getTime()
+                    : undefined;
 
             return {
                 accessToken: data.access_token,
-                refreshToken: data.refresh_token ?? refreshToken ?? null,
+                refreshToken: data.refresh_token ?? refreshToken,
                 expiresAt,
             };
         },
@@ -180,7 +187,7 @@ function createProvider(
 
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`Failed to fetch profile for ${type}: ${response.status} - ${errorText}`);
+                throw new Error(`Failed to fetch profile for ${type}: ${response.status} ${errorText}`);
             }
 
             const data = await response.json();

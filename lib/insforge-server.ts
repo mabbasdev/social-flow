@@ -4,7 +4,7 @@ import { createClient, type InsForgeClient } from '@insforge/sdk';
 // Environment variables
 const BASE_URL = process.env.NEXT_PUBLIC_INSFORGE_BASE_URL;
 const ANON_KEY = process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY;
-const PROJECT_API_KEY = process.env.NEXT_PUBLIC_INSFORGE_PROJECT_API_KEY;
+const PROJECT_API_KEY = process.env.INSFORGE_PROJECT_API_KEY || process.env.NEXT_PUBLIC_INSFORGE_PROJECT_API_KEY;
 const TEMPLATE = process.env.NEXT_PUBLIC_CLERK_INSFORGE_TEMPLATE;
 
 const SERVER_TOKEN_TEMPLATE = TEMPLATE || 'insforge';

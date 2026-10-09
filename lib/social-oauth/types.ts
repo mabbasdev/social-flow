@@ -9,9 +9,9 @@ export type OAuthConnectionProfile = {
 
 export type OAuthTokenResponse = {
     accessToken: string;
-    refreshToken?: string | null;
-    expiresAt?: number;
-}
+    refreshToken?: string;
+    expiresAt?: number; // Must be number | undefined
+};
 
 export type OAuthProvider = {
     type: ChannelTypeEnum
