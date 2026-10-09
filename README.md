@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SocialFlow — AI-Powered Social Media Management & Scheduling Platform
 
-## Getting Started
+SocialFlow is a modern, full-stack web application built to automate and streamline social media content creation, scheduling, and multi-platform publishing. Powered by **Next.js 16 (Turbopack)**, **Google Gemini AI**, **Inngest**, **Clerk**, and **InsForge (Supabase)**, SocialFlow allows creators and agencies to manage multi-channel social media campaigns seamlessly from a single dashboard.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🗝️ Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **🔐 Authentication**: Secure user authentication and tier-based membership control powered by Clerk.
+- **🔗 Account Management**: Connect, manage, and authorize multiple social media channels seamlessly.
+- **📱 Multi-Platform Support**: Cross-platform publishing directly to Twitter (X) and LinkedIn.
+- **📝 Post Management**: Create, edit, draft, and queue social media posts with multi-image attachments.
+- **👀 Custom Channel Previews**: Real-time custom preview components tailored to specific platform limits and layouts.
+- **🤖 AI Content Assistant**: Generate, rephrase, expand, or shorten posts using Google Gemini (`gemini-3.8-flash`).
+- **✨ AI-Powered Generation**: Intelligent prompt handling for tailored social media copy.
+- **📅 Calendar & List Views**: Interactive calendar and chronological list views for scheduled posts.
+- **📌 Kanban Idea Board**: Organized Kanban board to manage content ideas and workflow stages.
+- **⏰ Automated Scheduling**: Background publishing pipeline and cron jobs using Inngest.
+- **🔄 Silent Token Refresh**: Automatic OAuth 2.0 token refreshing prior to execution.
+- **🌐 Modern Tech Stack**: Built with Next.js 16, React, Inngest, Clerk, and InsForge.
+- **🎨 Sleek Modern UI**: Responsive design crafted with Tailwind CSS and shadcn/ui.
+- **🚀 Production Ready**: Fully typed, optimized production build configuration.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router & Turbopack)
+- **Language**: TypeScript
+- **Styling & UI**: Tailwind CSS, Radix UI / shadcn/ui, Lucide Icons
+- **Authentication & Billing**: [Clerk](https://clerk.com/)
+- **Database & Storage**: [InsForge / Supabase](https://supabase.com/) (PostgreSQL & Database Client)
+- **Background Jobs & Crons**: [Inngest](https://www.inngest.com/)
+- **AI Integration**: [@google/genai](https://www.npmjs.com/package/@google/genai) (`gemini-3.8-flash`)
+- **API Integrations**: Twitter (X), LinkedIn, (you can add more too.)
 
-To learn more about Next.js, take a look at the following resources:
+---
+## Credits
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Designed and developed by Muhammad Abbas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub: @mabbasdev | Twitter/X: @mabbasdev
