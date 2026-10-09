@@ -10,7 +10,7 @@ export type OAuthConnectionProfile = {
 export type OAuthTokenResponse = {
     accessToken: string;
     refreshToken?: string | null;
-    expiresAt?: string | null;
+    expiresAt?: number;
 }
 
 export type OAuthProvider = {
